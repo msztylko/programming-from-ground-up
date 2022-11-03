@@ -94,10 +94,30 @@ General-purpose registers on x86, that we can use as operands:
 
 Speical-purpose registers:
 * %ebp
-* esp
-* eip
-* eflags
+* %esp
+* %eip
+* %eflags
 
 `movl $1, %eax` - `movl` instrction moves the number 1 into `%eax`. The dollar-sign indicates that we want to use immediate mode addressing.  
 Without the dollar-sign it would do **direct addressing** loading whatever number is at address 1.
 We want actual number and for that we need to use immediate mode.
+
+#### Why do we move 1 into %eax?
+To make a system call. 
+1 - the number of the `exit` *system call*.
+When you make a system call, the system call number has to be loaded into %eax.
+To make a system call, operating systen requires various parameters that are stored in registers. For `exit` system call, the OS requires a status code to be loaded into %ebx.
+
+```assembly
+int $0x80
+```
+int stands for **interrupt**. `0x80` is the interrupt number to use. (0x80 instead of 80, because it's hexadecimal).
+
+### System Call Review
+1. OS features are accessed through **system calls**.
+2. They are invoked by
+   * setting up the registers in a special way
+   * issuing the instruction `int $0x80`
+3. Linux knows which system call to use from %eax register value.
+4. Each system call has different requierments about contents of other registers.
+   * for example `exit` system call has number 1 and requires status code to be placed in %ebx.
