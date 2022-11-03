@@ -23,7 +23,7 @@ line `movl $0, %ebx` corresponds to return number. We can change it to ` movl $4
 and after running this program exit status will be 42.
 
 We need 2 steps to be able to run this program
-1. Assemble
+1. Assemble - transforms the human-readable file into a machine-readable one.
 
 ```bash
 as exit.s -o exit.o
@@ -31,8 +31,9 @@ as exit.s -o exit.o
 file exit.o
 exit.o: ELF 64-bit LSB relocatable, x86-64, version 1 (SYSV), not stripped
 ```
+`exit.o` is an *object file*. An object file is code in the machine's language.
 
-2. Link
+2. Link - put together object files.
 
 ```bash
 ld exit.o -o exit
