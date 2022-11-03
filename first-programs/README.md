@@ -41,10 +41,11 @@ exit: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, no
 ```assembly
 .section .data
 ```
-Instructions to assembler, called *assembler directives* or *pseudo-operations*.
-Anything starting with a period isn't directly translated into a machine instruction.
-`.section` breaks your program up into secitons.
-`.section .data` - starts data section, list of any memory storage you will need for data.
+Instructions to assembler, called *assembler directives* or *pseudo-operations*.  
+
+Anything starting with a period isn't directly translated into a machine instruction:  
+ - `.section` breaks your program up into secitons.  
+ - `.section .data` - starts data section, list of any memory storage you will need for data.
 
 ```assembly
 .section .text
@@ -55,8 +56,8 @@ Starts text section with the actual program instructions.
 .globl _start
 ```
 `_start` is a *symbol*, which means it is going to be replaced by something else either during assembly or linking.  
-Symbols are used to refer to programs or data, by name instead of the location number.
-`.globl` means that assembler shouldn't discard this symbol after assembly, because the linker will need it.
+Symbols are used to refer to programs or data, by name instead of the location number.  
+`.globl` means that assembler shouldn't discard this symbol after assembly, because the linker will need it.  
 `_start` is a special symbol that always needs to be marked with `.globl` because it marks the location of the start of the program.
 
 **Without marking this location in this way, when the computer loads your program
@@ -65,21 +66,22 @@ it won’t know where to begin running your program.**
 ```assembly
 _start:
 ```
-defines the value of the `_start` label.
+defines the value of the `_start` label.  
 **label** - symbol followed by a colon. Labels define a symbol's value.
 
 ```assembly
 movl $1, %eax
 ```
-transfer the number 1 into the `%eax` register.  
+transfer the number 1 into the %eax register.  
+
 `movl` instruction has 2 operands - *source* and *destination*.  
 
-Operands can be:
+*Operands* can be:
  * numbers
  * memory location references
  * registers
 
-General-purpose registers on x86, that we can use as operands:
+General-purpose registers on x86, that we can use as *operands*:
 * %eax
 * %ebx
 * %ecx
@@ -93,18 +95,21 @@ Speical-purpose registers:
 * %eip
 * %eflags
 
-`movl $1, %eax` - `movl` instrction moves the number 1 into `%eax`. The dollar-sign indicates that we want to use immediate mode addressing.  
+`movl $1, %eax` - `movl` instruction moves the number 1 into `%eax`.  
+The dollar-sign indicates that we want to use **immediate mode** addressing.  
 Without the dollar-sign it would do **direct addressing** loading whatever number is at address 1.
 We want actual number and for that we need to use immediate mode.
 
-#### Why do we move 1 into %eax?
-To make a system call. 
-1 - the number of the `exit` *system call*.
-When you make a system call, the system call number has to be loaded into %eax.
-To make a system call, operating systen requires various parameters that are stored in registers. For `exit` system call, the OS requires a status code to be loaded into %ebx.
+Why do we move 1 into %eax?  
 
-line `movl $0, %ebx` corresponds to return number. We can change it to ` movl $42, %ebx` 
-and after running this program exit status will be 42.
+To make a system call.  
+1 - the number of the `exit` *system call*. When you make a system call, the system call number has to be loaded into %eax. To make a system call, operating systen requires various parameters that are stored in registers. For `exit` system call, the OS requires a status code to be loaded into %ebx.
+
+```assembly
+movl $0, %ebx
+```
+move 0 into %ebx register. `exit` system call uses the content of %ebs register as a exit status value.
+We can change it to ` movl $42, %ebx` and after running this program exit status will be 42.
 
 ```assembly
 int $0x80
