@@ -44,7 +44,7 @@ exit: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, no
 Instructions to assembler, called *assembler directives* or *pseudo-operations*.  
 
 Anything starting with a period isn't directly translated into a machine instruction:  
- - `.section` breaks your program up into secitons.  
+ - `.section` breaks your program up into sections.  
  - `.section .data` - starts data section, list of any memory storage you will need for data.
 
 ```assembly
