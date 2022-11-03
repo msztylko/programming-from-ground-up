@@ -66,3 +66,38 @@ Symbols are used to refer to programs or data, by name instead of the location n
 
 **Without marking this location in this way, when the computer loads your program
 it won’t know where to begin running your program.**
+
+```assembly
+_start:
+```
+defines the value of the `_start` label.
+**label** - symbol followed by a colon. Labels define a symbol's value.
+
+```assembly
+movl $1, %eax
+```
+transfer the number 1 into the `%eax` register.  
+`movl` instruction has 2 operands - *source* and *destination*.  
+
+Operands can be:
+ * numbers
+ * memory location references
+ * registers
+
+General-purpose registers on x86, that we can use as operands:
+* %eax
+* %ebx
+* %ecx
+* %edx
+* %edi
+* %esi
+
+Speical-purpose registers:
+* %ebp
+* esp
+* eip
+* eflags
+
+`movl $1, %eax` - `movl` instrction moves the number 1 into `%eax`. The dollar-sign indicates that we want to use immediate mode addressing.  
+Without the dollar-sign it would do **direct addressing** loading whatever number is at address 1.
+We want actual number and for that we need to use immediate mode.
