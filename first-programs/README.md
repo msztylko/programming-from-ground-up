@@ -124,3 +124,11 @@ int stands for **interrupt**. `0x80` is the interrupt number to use. (0x80 inste
 3. Linux knows which system call to use from %eax register value.
 4. Each system call has different requierments about contents of other registers.
    * for example `exit` system call has number 1 and requires status code to be placed in %ebx.
+   
+   
+# Only numbers
+>When reading a piece of paper, you can stop when you run out of
+numbers. However, the computer only contains numbers, so it has no idea when it
+has reached the last of your numbers.  
+
+This is why we use null character to end strings in C and we need to specify the number of elements we want to work with. There are only numbers.
