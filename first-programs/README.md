@@ -1,13 +1,10 @@
 # First programs
 
-## Conpects
-1. `%eax` - holds the system call number
-2. `%ebx` - holds the return status
-3. `int $0x80` - wakes up the kernel to run
-
 ## First assembly program
+
+[exit.s](./exit.s)
+
 ```assembly
-exit.s
 
 .section .data
 
@@ -19,11 +16,8 @@ _start:
  int $0x80
 ```
 
-line `movl $0, %ebx` corresponds to return number. We can change it to ` movl $42, %ebx` 
-and after running this program exit status will be 42.
-
-We need 2 steps to be able to run this program
-1. Assemble - transforms the human-readable file into a machine-readable one.
+We need 2 steps to be able to run this program:
+1. Assemble - transform the human-readable file into a machine-readable one.
 
 ```bash
 as exit.s -o exit.o
@@ -41,7 +35,8 @@ ld exit.o -o exit
 file exit
 exit: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, not stripped
 ```
-### Breakdown of the First assembly program
+
+## Breakdown of the First assembly program
 
 ```assembly
 .section .data
@@ -107,6 +102,9 @@ To make a system call.
 1 - the number of the `exit` *system call*.
 When you make a system call, the system call number has to be loaded into %eax.
 To make a system call, operating systen requires various parameters that are stored in registers. For `exit` system call, the OS requires a status code to be loaded into %ebx.
+
+line `movl $0, %ebx` corresponds to return number. We can change it to ` movl $42, %ebx` 
+and after running this program exit status will be 42.
 
 ```assembly
 int $0x80
