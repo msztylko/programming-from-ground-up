@@ -169,3 +169,82 @@ loop_exit:
  movl $1, %eax
  int $0x80
 ```
+
+First, include debugging information in the executable.
+
+```bash
+as --gstabs broken_maximum.s -o broken_maximum.o
+```
+linking is the same as before.
+
+Now you can run this program under debugger
+```bash
+gdb ./broken_maximum
+```
+
+You can now run your program by typing `run`. It will keep running in an infinite loop, use control-c to stop it by sending `SIGINIT` signal
+```bash
+Starting program: /home/marcin/code/programming-from-ground-up/first-programs/broken_maximum 
+^C
+Program received signal SIGINT, Interrupt.
+start_loop () at broken_maximum.s:29
+29	 cmpl $0, %eax
+```
+Program is now stopped and you can step through it with `stepi` (step instruction)
+```bash
+(gdb) stepi
+30	 je loop_exit
+(gdb) stepi
+32	 movl data_items(,%edi,4), %eax
+(gdb) stepi
+33	 cmpl %ebx, %eax
+(gdb) stepi
+34	 jle start_loop
+(gdb) stepi
+29	 cmpl $0, %eax
+(gdb) stepi
+30	 je loop_exit
+(gdb) stepi
+32	 movl data_items(,%edi,4), %eax
+(gdb) stepi
+33	 cmpl %ebx, %eax
+```
+
+Here condition for exiting loop is not triggered, we can check if the content of registers is as expected with `into register` command.
+
+```bash
+(gdb) info register
+rax            0x3	3
+rbx            0x3	3
+rcx            0x0	0
+rdx            0x0	0
+rsi            0x0	0
+rdi            0x0	0
+rbp            0x0	0x0
+rsp            0x7fffffffdd90	0x7fffffffdd90
+r8             0x0	0
+r9             0x0	0
+r10            0x0	0
+r11            0x0	0
+r12            0x0	0
+r13            0x0	0
+r14            0x0	0
+r15            0x0	0
+rip            0x4000bf	0x4000bf <start_loop>
+eflags         0x246	[ PF ZF IF ]
+cs             0x33	51
+ss             0x2b	43
+ds             0x0	0
+es             0x0	0
+fs             0x0	0
+gs             0x0	0
+```
+
+If we are interested in only one register, we can do it with `print`
+```bash
+(gdb) print/d $eax
+$1 = 3
+(gdb) print $eax
+$2 = 3
+```
+`print` shows value in hexadecial, `print/d` in decimal.
