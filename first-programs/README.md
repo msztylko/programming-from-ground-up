@@ -132,3 +132,40 @@ numbers. However, the computer only contains numbers, so it has no idea when it
 has reached the last of your numbers.  
 
 This is why we use null character to end strings in C and we need to specify the number of elements we want to work with. There are only numbers.
+
+## Second Assembly Program - Maximum Number
+...
+
+## Assembly debugging with GDB
+
+based on [broken_maximum.s](./broken_maximum.s)
+
+```assembly
+.section .data
+
+data_items:
+ .long 3, 12, 54, 23, 95, 115, 234, 51, 20, 0
+
+ .section .text
+
+ .globl _start
+_start:
+ movl $0, %edi
+ movl data_items(,%edi,4), %eax
+ movl %eax, %ebx
+
+start_loop:
+ cmpl $0, %eax
+ je loop_exit
+ # incl %edi    # omitted for debugging demo 
+ movl data_items(,%edi,4), %eax
+ cmpl %ebx, %eax
+ jle start_loop
+
+ movl %eax, %ebx
+ jmp start_loop
+
+loop_exit:
+ movl $1, %eax
+ int $0x80
+```
