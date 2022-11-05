@@ -133,8 +133,8 @@ has reached the last of your numbers.
 
 This is why we use null character to end strings in C and we need to specify the number of elements we want to work with. There are only numbers.
 
-## Second Assembly Program - Maximum Number
-...
+## Second Assembly Program - Maximum/Minimum Number
+More interesting than the first program. [maximum.s](./maximum.s) is an example from the book and based on that I've made similar [minimum.s](./minimum.s)
 
 ## Assembly debugging with GDB
 
@@ -248,3 +248,20 @@ $1 = 3
 $2 = 3
 ```
 `print` shows value in hexadecial, `print/d` in decimal.
+
+To debug program that doesn't run in infinite loop or cannot be stopped with control-c you need to use **breakpoints**. You need to set breakpoints before program starts running.
+
+```bash
+break <line-number>
+```
+
+While debugging I find myself recompiling and linking my files again and again. That part can be automated with a `makefile`:
+
+```bash
+minimum: minimum.o
+    ld -o minimum minimum.o
+minimum.o: minimum.s
+    as -o minimum.o minimum.s
+clean:
+    rm *.o minimum
+```
