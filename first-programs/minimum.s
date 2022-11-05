@@ -6,12 +6,12 @@
 # %ebx - minimum number  
 # %ecx - value from the current position
 #
-# end of list specified with -1 value
+# end of list specified with 256 value
 
 .section .data
 
 data_list:
- .long 9, 7, 3, 1, 2, 8, 0, 4, 6, -1
+ .long 9, 7, 3, 1, 2, 8, 4, 6, 256
 
 .section .text
 
@@ -24,7 +24,7 @@ _start:                         # initialize registers
 
 start_loop:     # iterate over all items
     # if -1 exit
-    cmpl $-1, %ecx
+    cmpl $256, %ecx
     je loop_exit
     incl %eax                   # increment %eax register (point to data), by one word (that comes from type .long ?)
     movl data_list(,%eax,4), %ecx
