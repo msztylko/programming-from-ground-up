@@ -287,7 +287,7 @@ Program is now stopped and you can step through it with `stepi` (step instructio
 33	 cmpl %ebx, %eax
 ```
 
-Here condition for exiting loop is not triggered, we can check if the content of registers is as expected with `into register` command.
+Here condition for exiting loop is not triggered, we can check if the content of registers is as expected with `info register` command.
 
 ```bash
 (gdb) info register
