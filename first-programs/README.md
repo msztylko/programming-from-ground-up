@@ -141,14 +141,39 @@ data_items:
  .long 3, 12, 54, 23, 95, 115, 234, 51, 20, 0
 ```
 `data_items` instructs assembler to reserve memory for the list of numbers. `data_items` is a label, so we can refer to it later in a program and assembler with substitue this symbol with the address where the numbers start during assembly, e.g.:   
-`movl data_items, %eax`  
-will move the value 3 into %eax.
+`movl data_items, %eax` will move the value 3 into %eax.
 
 We can reserve different types of memeory:
  - `.byte` - one storage location for each number, limited to numbers 0 - 255
  - `.int` - two storage locations for each number, covers numbers from 0 to 65535.
  - `.long` - four storage locations, which is the same amount of space as registers, holds numbers form 0 to 4294967295.
  - `.ascii` - for characters, which take one storage location (internally converted to bytes)
+
+We don't use `.globl` declaration for `data_items` as they are only used internally.
+
+```assembly
+movl $0, %edi
+```
+initialize index variable to 0.
+
+```assembly
+movl data_items(,%edi,4), %eax
+```
+that means start at `data_items` address and take the first number (%edi index is 0) and remember that each number takes 4 storage locations. Then store it in %eax. This is done via **indexed addressing mode**.
+
+```assembly
+movl BEGINNINGADDRESS(,%INDEXREGISTER,WORDSIZE)
+```
+In our case data_items was our beginning address, %edi was our index register,
+and 4 was our word size.
+
+```assembly
+movl %eax, %ebx
+```
+First value is loaded into %eax, we can set max so far to that value by moving it into %ebx.
+
+Also, the l in movl stands for move long since we are moving a value that takes up four
+storage locations.
 
 ## Assembly debugging with GDB
 
