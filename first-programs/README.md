@@ -254,3 +254,14 @@ To debug program that doesn't run in infinite loop or cannot be stopped with con
 ```bash
 break <line-number>
 ```
+
+While debugging I find myself recompiling and linking my files again and again. That part can be automated with a `makefile`:
+
+```bash
+minimum: minimum.o
+    ld -o minimum minimum.o
+minimum.o: minimum.s
+    as -o minimum.o minimum.s
+clean:
+    rm *.o minimum
+```
