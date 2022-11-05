@@ -136,6 +136,20 @@ This is why we use null character to end strings in C and we need to specify the
 ## Second Assembly Program - Maximum/Minimum Number
 More interesting than the first program. [maximum.s](./maximum.s) is an example from the book and based on that I've made similar [minimum.s](./minimum.s)
 
+```assembly
+data_items:
+ .long 3, 12, 54, 23, 95, 115, 234, 51, 20, 0
+```
+`data_items` instructs assembler to reserve memory for the list of numbers. `data_items` is a label, so we can refer to it later in a program and assembler with substitue this symbol with the address where the numbers start during assembly, e.g.:   
+`movl data_items, %eax`  
+will move the value 3 into %eax.
+
+We can reserve different types of memeory:
+ - `.byte` - one storage location for each number, limited to numbers 0 - 255
+ - `.int` - two storage locations for each number, covers numbers from 0 to 65535.
+ - `.long` - four storage locations, which is the same amount of space as registers, holds numbers form 0 to 4294967295.
+ - `.ascii` - for characters, which take one storage location (internally converted to bytes)
+
 ## Assembly debugging with GDB
 
 based on [broken_maximum.s](./broken_maximum.s)
