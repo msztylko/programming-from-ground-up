@@ -175,6 +175,44 @@ First value is loaded into %eax, we can set max so far to that value by moving i
 Also, the l in movl stands for move long since we are moving a value that takes up four
 storage locations.
 
+```assembly
+start_loop:
+ cmpl $0, %eax
+ je loop_exit
+ incl %edi
+ movl data_items(,%edi,4), %eax
+ cmpl %ebx, %eax
+ jle start_loop
+ movl %eax, %ebx
+ jmp start_loop
+```
+From the higher-level perspective this loop can be broken down into
+1. Exit condition
+
+```assembly
+ cmpl $0, %eax
+ je loop_exit
+```
+Exit loop if the current item is 0. `cmpl` instruction sets the status on %eflags register and this is where the result of comparison is stored. Based on that we may *jump* to loop_exit. There are several jump instructions:
+ - `je` - Jump if the values were equal
+ - `jg` - Jump if the **second value** was greater than the **first value**
+ - `jge` - Jump if the second value was greater than or equal to the first value
+ - `jl` - Jump if the second value was less than the first value
+ - `jle` - Jump if the second value was less than or equal to the first value
+ - `jmp` - Jump no matter what. This does not need to be preceeded by a comparison.
+
+2. Item processing
+
+```assembly
+ incl %edi
+ movl data_items(,%edi,4), %eax
+ cmpl %ebx, %eax
+ jle start_loop
+ movl %eax, %ebx
+ jmp start_loop
+```
+
+
 ## Assembly debugging with GDB
 
 based on [broken_maximum.s](./broken_maximum.s)
