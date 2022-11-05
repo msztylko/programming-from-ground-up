@@ -365,3 +365,43 @@ ADDRESS_OR_OFFSET and MULTIPLIER must both be constants, while the other
 two must be registers. If any of the pieces is left out, it is just substituted with zero
 in the equation.
 
+### direct addressing mode
+only ADDRESS_OR_OFFSET
+```assembly
+movl ADDRESS, %eax
+```
+This loads %eax with the value at memory address ADDRESS.
+
+### indexed addressing mode
+ADDRESS_OR_OFFSET and the %INDEX portion
+```assembly
+movl string_start(,%ecx,1), %eax
+```
+This starts at string_start, and adds 1 * %ecx to that address, and loads
+the value into %eax.
+
+### indirect addressing mode
+```assembly
+movl (%eax), %ebx
+```
+
+### base pointer addressing mode
+Base-pointer addressing is similar to indirect addressing, except that it adds a constant value to the address in the register
+```assembly
+movl 4(%eax), %ebx
+```
+For example, if you have a record where the age value is 4 bytes into the record, and you have the address of the record in %eax, you can retrieve the age into %ebx
+
+### immediate mode
+Used to load direct values into registers or memory locations
+```assembly
+movl $12, %eax
+```
+Notice that to indicate immediate mode, we used a dollar sign in front of the
+number. If we did not, it would be direct addressing mode, in which case the
+value located at memory location 12 would be loaded into %eax rather than
+the number 12 itself.
+
+### register addressing mode
+Register mode simply moves data in or out of a register. In all of our
+examples, register addressing mode was used for the other operand.
