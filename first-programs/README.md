@@ -248,3 +248,9 @@ $1 = 3
 $2 = 3
 ```
 `print` shows value in hexadecial, `print/d` in decimal.
+
+To debug program that doesn't run in infinite loop or cannot be stopped with control-c you need to use **breakpoints**. You need to set breakpoints before program starts running.
+
+```bash
+break <line-number>
+```
