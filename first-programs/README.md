@@ -342,3 +342,26 @@ minimum.o: minimum.s
 clean:
     rm *.o minimum
 ```
+
+## Addressing Modes
+
+1. Immediate mode - data to access is embedded in the instruction itself.
+2. Register addressing mode - instruction contains register to access rather than memory location.
+3. Direct addressing mode - instruction contains the memory address to access.
+4. Indexed addressing mode - memory address to access + index register to offset that address.
+5. Indirect addressing mode - instruction contains a register that contains a pointer to where the data should be accessed.
+6. Base pointer addressing mode - similar to indirect addressing, but you also include an offset to add to the register's value before using it for lookup.
+
+The general form of memory address references is this:  
+
+`ADDRESS_OR_OFFSET(%BASE_OR_OFFSET,%INDEX,MULTIPLIER)`
+
+All of the fields are optional. To calculate the address, simply perform the
+following calculation:
+
+`FINAL ADDRESS = ADDRESS_OR_OFFSET + %BASE_OR_OFFSET + MULTIPLIER * %INDEX`
+
+ADDRESS_OR_OFFSET and MULTIPLIER must both be constants, while the other
+two must be registers. If any of the pieces is left out, it is just substituted with zero
+in the equation.
+
