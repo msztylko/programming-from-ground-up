@@ -133,8 +133,8 @@ has reached the last of your numbers.
 
 This is why we use null character to end strings in C and we need to specify the number of elements we want to work with. There are only numbers.
 
-## Second Assembly Program - Maximum Number
-...
+## Second Assembly Program - Maximum/Minimum Number
+More interesting than the first program. [maximum.s](./maximum.s) is an example from the book and based on that I've made similar [minimum.s](./minimum.s)
 
 ## Assembly debugging with GDB
 
