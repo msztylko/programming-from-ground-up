@@ -142,10 +142,12 @@ So in preparation for function execution all parameters are push onto the stack 
 ```assembly
 addl $8, %esp
 ```
+Pop off all of the parameters we pushed onto the stack in order to get the stack pointer back where it was. We pushed 2 arguments, each 4 bytes long, so we simply add 4 * 2 (number of parameters) to %esp.
 
 ```assembly
 pushl %eax
 ```
+Save the first answer before calling the next function.
 
 ```assembly
  pushl $2
@@ -153,19 +155,24 @@ pushl %eax
  call power
  addl $8, %esp
 ```
+Second function call - again, push arguments in reverse order, call function, move the stack pointer back.
 
 ```assembly
 popl %ebx
 ```
+The **second** answer is in %eax (this is where return value goes from the function). The **first** answer was saved on the stack (`pushl %eax`), so now we can pop it into %ebx.
+%eax holds the second answer, %ebx holds the first answer.
 
 ```assembly
 addl %eax, %ebx
 ```
+Add them together, the result is in %ebx.
 
 ```assembly
  movl $1, %eax
  int $0x80
 ```
+Exit, return code (%ebx) holds the result.
 
 **POWER FUNCTION**
 ```assembly
@@ -236,6 +243,14 @@ end_power:
  ret
 ```
 
-`movl -4(%ebp), %eax` - store the return value in %eax
-`movl %ebp, %esp` and `popl %ebp` - reset the stack to what is was when it was called
-`ret` - return control back to wherever it was was called from. ret instruction pops whatever value is at the top of the stack, and sets the instruction pointer %eip to that value.
+`movl -4(%ebp), %eax` - store the return value in %eax  
+`movl %ebp, %esp` and `popl %ebp` - reset the stack to what is was when it was called  
+`ret` - return control back to wherever it was was called from. ret instruction pops whatever value is at the top of the stack, and sets the instruction pointer %eip to that value.  
+
+This seems to be a general pattern for returning from a function:
+```assembly
+movl %ebp, %esp
+popl %ebp
+ret
+```
+*At this point, you should consider all local variables to be disposed of.* You moved stack pointer back, so future stack pushes will likely overwrite everything you put there.
