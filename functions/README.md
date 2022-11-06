@@ -101,6 +101,7 @@ end_power:
 
 ### Program breakdown
 
+**MAIN**
 ```assembly
 .section .data
 ```
@@ -124,6 +125,19 @@ Push arguments to function `power` in reverse order. We want to compute power(2,
 ```assembly
  call power    
 ```
+`call` instruction with the name of the function we want to start. call does 2 things:
+1. push address of the next instruction (return address) onto the stack.
+2. modify the instruction pointer (%eip) to point to the start of the function.
+
+At the time the function starts, the stack looks like this:
+```
+Parameter #N
+...
+Parameter 2
+Parameter 1
+Return Address <--- (%esp)
+```
+So in preparation for function execution all parameters are push onto the stack and at the top we have the return address. GO TO POWER FUNCTION.
 
 ```assembly
 addl $8, %esp
@@ -153,6 +167,7 @@ addl %eax, %ebx
  int $0x80
 ```
 
+**POWER FUNCTION**
 ```assembly
 .type power, @function
 power:
@@ -161,10 +176,21 @@ power:
 ```assembly
 pushl %ebp
 ```
+Save the current base pointer register %ebp. %ebp is used for accessing function parameters and local variables.
 
 ```assembly
 movl %esp, %ebp
 ```
+Copy the stack pointer to %ebp. This allows you to be able to access the function parameters as fixed indexes from the base pointer. %ebp will always be where the stack pointer was at the beginning of the function, so it is more or less a constant reference to the **stack frame** (all of the stack variables used within a function: parameters, local variables and the return address). At this step stack looks like:
+```
+Parameter #N <--- N*4+4(%ebp)
+...
+Parameter 2 <--- 12(%ebp)
+Parameter 1 <--- 8(%ebp)
+Return Address <--- 4(%ebp)
+Old %ebp <--- (%esp) and (%ebp)
+```
+
 
 ```assembly
 subl $4, %esp
