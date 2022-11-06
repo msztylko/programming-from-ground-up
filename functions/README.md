@@ -98,3 +98,104 @@ end_power:
  popl %ebp              
  ret
 ```
+
+```assembly
+.section .data
+```
+
+```assembly
+.section .text
+
+.globl _start
+
+_start:
+```
+
+```assembly
+ pushl $3           
+ pushl $2 
+```
+
+```assembly
+ call power    
+```
+
+```assembly
+addl $8, %esp
+```
+
+```assembly
+pushl %eax
+```
+
+```assembly
+ pushl $2
+ pushl $5
+ call power
+ addl $8, %esp
+```
+
+```assembly
+popl %ebx
+```
+
+```assembly
+addl %eax, %ebx
+```
+
+```assembly
+ movl $1, %eax
+ int $0x80
+```
+
+```assembly
+.type power, @function
+power:
+```
+
+```assembly
+pushl %ebp
+```
+
+```assembly
+movl %esp, %ebp
+```
+
+```assembly
+subl $4, %esp
+```
+
+```assembly
+ movl 8(%ebp), %ebx     
+ movl 12(%ebp), %ecx  
+```
+
+```assembly
+movl %ebx, -4(%ebp)   
+```
+
+```assembly
+power_loop_start:
+ cmpl $1, %ecx          
+ je end_power
+ movl -4(%ebp), %eax    
+ imull %ebx, %eax        
+                        
+ movl %eax, -4(%ebp)    
+
+ decl %ecx              
+ jmp power_loop_start
+```
+
+```assembly
+end_power:
+ movl -4(%ebp), %eax    
+ movl %ebp, %esp        
+ popl %ebp              
+ ret
+```
+
+
+
+
+
