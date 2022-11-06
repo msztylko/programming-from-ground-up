@@ -191,10 +191,20 @@ Return Address <--- 4(%ebp)
 Old %ebp <--- (%esp) and (%ebp)
 ```
 
-
 ```assembly
 subl $4, %esp
 ```
+Reserve space on the stack for local variables. In this case, move stack pointer down one word, because we're going to use -4(%ebp) to hold the current result. Now stack looks like:
+```
+Parameter #N <--- N*4+4(%ebp)
+...
+Parameter 2 <--- 12(%ebp)
+Parameter 1 <--- 8(%ebp)
+Return Address <--- 4(%ebp)
+Old %ebp <--- (%ebp)
+Local Variable 1 <--- -4(%ebp) and (%esp)
+```
+so now we can access all the data we need for this function with base pointer addressing using different offsets from %ebp. %ebp was made specifically for this purpose, which is why it is called the *base pointer*.
 
 ```assembly
  movl 8(%ebp), %ebx     
@@ -226,7 +236,6 @@ end_power:
  ret
 ```
 
-
-
-
-
+`movl -4(%ebp), %eax` - store the return value in %eax
+`movl %ebp, %esp` and `popl %ebp` - reset the stack to what is was when it was called
+`ret` - return control back to wherever it was was called from. ret instruction pops whatever value is at the top of the stack, and sets the instruction pointer %eip to that value.
