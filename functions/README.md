@@ -217,10 +217,12 @@ so now we can access all the data we need for this function with base pointer ad
  movl 8(%ebp), %ebx     
  movl 12(%ebp), %ecx  
 ```
+load both arguments into specified registers
 
 ```assembly
 movl %ebx, -4(%ebp)   
 ```
+store current result, we start we the first value in %ebx and we use `-4(%ebp)` location for storing current result.
 
 ```assembly
 power_loop_start:
@@ -234,6 +236,7 @@ power_loop_start:
  decl %ecx              
  jmp power_loop_start
 ```
+compute power in a loop
 
 ```assembly
 end_power:
