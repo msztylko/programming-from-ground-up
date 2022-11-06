@@ -99,9 +99,12 @@ end_power:
  ret
 ```
 
+### Program breakdown
+
 ```assembly
 .section .data
 ```
+Everything in this program is stored in registers, so no need for `.data`.
 
 ```assembly
 .section .text
@@ -110,11 +113,13 @@ end_power:
 
 _start:
 ```
+Standard start.
 
 ```assembly
  pushl $3           
  pushl $2 
 ```
+Push arguments to function `power` in reverse order. We want to compute power(2,3) so we're pushing first 3 and then 2.
 
 ```assembly
  call power    
