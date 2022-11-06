@@ -1,0 +1,44 @@
+# All About Functions
+
+Functions are composed of:
+1. function name - a symbol that represents the address where the function's code starts.
+2. function parameters - data items explicitly given to the function for processing.
+3. local variables - data storage that a function uses while processing that is thrown away when it returns.
+4. static variables - data storage that a function uses while processing that is **not** thrown away afterwards.
+It's reused for every time the function's code is activated.
+5. global variables - data storage that a function uses for processing which are managed outside the function.
+6. return address - parameter which tells the function where to resume executing after the function is completed.
+7. return value - main method of transferring data back to the main program.
+
+These piece are present in most programming languages, but they can obey different **calling conventions**.
+
+## Assembly-Language Functions using the C Calling Convention
+
+### Memory stack
+* lives at the top address of memory
+* you can push values onto the top of the stack with `pushl`
+* top is actually the bottom - the stack starts at the top of the memory and grows downward.
+* you can pop values using `popl`
+* `%esp` register always contains a pointer to the current top of the stack
+  * when we push to stack (pushl) %esp gets subtracted by 4 (so that it points to the new top of the stack)
+  * when we remove from stack (popl), 4 is added to %esp
+
+Acccess the value on the top of the stack without removing it:
+```assembly
+movl (%esp), %eax
+```
+use the %esp register in indirect addressing mode to move top value into %eax.
+
+```assembly
+movl %esp, %eax
+```
+would make %eax hold the pointer to the top of the stack tather than the value at the top.
+
+Access the value right below the top of the stack:
+```assembly
+movl 4(%esp), %eax
+```
+base pointer addressing mode, adds 4 to %esp before looking up the value being pointed to.
+
+The **stack** is the key element for implementing C language calling convention.
+
