@@ -2,5 +2,9 @@ power: power.o
 	ld -m elf_i386 power.o -o power
 power.o: power.s
 	as --32 power.s -o power.o
+my_function: my_function.o
+	ld -m elf_i386 my_function.o -o my_function
+my_function.o: my_function.s
+	as --32 my_function.s -o my_function.o
 clean:
-	rm *.o power
+	rm *.o power my_function
