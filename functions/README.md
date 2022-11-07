@@ -22,6 +22,9 @@ These piece are present in most programming languages, but they can obey differe
 * `%esp` register always contains a pointer to the current top of the stack
   * when we push to stack (pushl) %esp gets subtracted by 4 (so that it points to the new top of the stack)
   * when we remove from stack (popl), 4 is added to %esp
+  
+ ![image](https://user-images.githubusercontent.com/39266310/200245952-83ae0b7e-adf3-48bb-9e31-9030ea80a1d7.png)
+
 
 Acccess the value on the top of the stack without removing it:
 ```assembly
