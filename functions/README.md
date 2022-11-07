@@ -260,3 +260,86 @@ popl %ebp
 ret
 ```
 *At this point, you should consider all local variables to be disposed of.* You moved stack pointer back, so future stack pushes will likely overwrite everything you put there.
+
+## The C Calling Convention
+
+[my_function.s](./my_function.s)
+
+```assembly
+.section .text
+
+.globl _start
+_start:
+# 1. Push parameters in reverse order
+pushl $3
+pushl $6
+# 2. call your function
+# this call is responsible for 2 things:
+#   - push return address onto the stack
+#   - move %eip pointer to point to function code
+call power
+# 8. get return value, cleanup parameters
+ # get return value from %eax
+ movl %eax, %ebx
+ # get rid of parameters by reseting the stack pointer 
+ addl $8, %esp
+ # exit sys call
+ movl $1, %eax
+ int $0x80
+
+# PURPOSE: power(base, exp)
+#
+# VARIABLES: 
+#          %eax - base
+#          %ecx - exponent
+#          -4(%ebp) - current result
+
+.type power, @function
+power:
+# 3. save %ebp on the stack and copy the stack pointer to %ebp
+pushl %ebp
+movl %esp, %ebp
+# 4. reserve space for local variables
+#    only on use in this function, so reserve 4 space
+subl $4, %esp
+# 5. prepare variables
+movl 8(%ebp), %eax  # load base
+movl 12(%ebp), %ecx # load exponent
+movl %eax, -4(%ebp) # set current result to base
+# 6. processing
+power_loop:
+ cmpl $1, %ecx
+ je exit
+ movl -4(%ebp), %edx
+ imull %eax, %edx
+ movl %edx, -4(%ebp)
+ decl %ecx
+ jmp power_loop
+
+# 7. exit
+exit:
+ # move result to %eax
+ movl -4(%ebp), %eax
+ # reset stack pointer
+ movl %ebp, %esp 
+ pop %ebp
+ # return and set instruction pointer back to caller 
+ ret
+```
+
+1. Push function parameters in the reverse order.
+2. Call the function:
+    - pushes return address onto the stack
+    - moves %eip (Extended Instruction Pointer) to correct address)
+ 3. (Enter Function) Save %ebp on the stack and copy the stack pointer to %ebp.  
+ This is used to create a fixed reference to the stack frame.
+ 4. Reserve space for the local variables.
+ 5. Prepare variables - initialize them to correct parameters
+ 6. Function processing
+ 7. Exit function:
+    - move result to %eax
+    - reset stack pointer
+    - `ret` - return control flow to the caller, by setting %eip
+ 8. (Back to caller code)
+    - get return value from %eax
+    - reset stack pointer - move back from parameters we initially pushed
