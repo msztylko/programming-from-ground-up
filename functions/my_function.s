@@ -55,6 +55,6 @@ exit:
  movl -4(%ebp), %eax
  # reset stack pointer
  movl %ebp, %esp 
- pop %ebp
+ popl %ebp
  # return and set instruction pointer back to caller 
  ret
