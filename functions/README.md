@@ -344,3 +344,106 @@ exit:
  8. (Back to caller code)
     - get return value from %eax
     - reset stack pointer - move back from parameters we initially pushed
+    
+## Recursive Function - Factorial 5!
+
+[my_factorial.s](./my_factorial.s)
+
+```assembly
+.section  .text
+.globl _start
+_start:
+ pushl $5
+ call factorial
+ addl $4, %esp
+
+ movl %ecx, %ebx
+ movl $1, %eax
+ int $0x80
+
+.type factorial, @function
+factorial:
+ pushl %ebp
+ movl %esp, %ebp
+
+ movl 8(%ebp), %ecx
+ 
+ cmpl $1, %ecx
+ je factorial_exit
+ 
+ decl %ecx
+ pushl %ecx
+ call factorial
+ movl 8(%ebp), %edx
+ 
+ imull %edx, %ecx
+
+factorial_exit:
+ movl %ebp, %esp
+ popl %ebp
+ ret 
+```
+
+### Breakdown
+
+```assembly
+ pushl $5
+```
+Push arguments onto the stack, this time only one.
+
+```assembly
+ call factorial
+ ```
+Call the funtion.
+
+```assembly
+ pushl %ebp
+ movl %esp, %ebp
+```
+(Inside function) Save %ebp.  
+No need to reserve storage for local variables in this function.
+
+```assembly
+ movl 8(%ebp), %ecx
+```
+Initialize variables, %ecx holds n.
+
+```assembly
+ cmpl $1, %ecx
+ je factorial_exit
+```
+Base case - if current n = 1, return.
+
+```assembly
+ decl %ecx
+ pushl %ecx
+ call factorial
+```
+Decreament n, push it onot the stack and call factorial. That corresponds to the recursive call factorial(n-1).
+
+```assembly
+ movl 8(%ebp), %edx
+```
+Load orignal n to %edx this time. 
+
+```assembly
+ imull %edx, %ecx
+```
+n * factorial(n-1). %ecx will hold the final result.
+
+```assembly
+factorial_exit:
+ movl %ebp, %esp
+ popl %ebp
+ ret 
+```
+Standard exit.
+
+```assembly
+ movl %ecx, %ebx
+ movl $1, %eax
+ int $0x80
+```
+Also mostly standard system call to exit, just not that we are using %ecx to hold the result.
+
+`.type factorial, @function`  - this tells the linker that factorial is a function. 
