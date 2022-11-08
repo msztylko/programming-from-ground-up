@@ -5,7 +5,7 @@
 .globl _start
 _start:
  # 1. push args, reverse order
- pushl $4
+ pushl $5
  # 2. call function 
  call factorial
  addl $4, %esp
