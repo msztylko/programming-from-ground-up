@@ -67,7 +67,7 @@ Linux programs usually have at least three open file descriptors whey they begin
 2. STDOUT - *standard output*. Write-only file, and usually represnts your screen display. This is always file descriptor 1.
 3. STDERR - *standard error*. Write-only file, and usually represents your screen display and is mostly used for error messages. This is always file descriptor 2.
 
-Any of these "files" can be redirected form or to a real file. UNIX-based operating systems treat all input/output systems as files.
-    - network connections
-    - serial port
-    - audio devices
+Any of these "files" can be redirected form or to a real file. UNIX-based operating systems treat all input/output systems as files:  
+    - network connections  
+    - serial port  
+    - audio devices  
