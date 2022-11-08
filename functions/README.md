@@ -347,6 +347,8 @@ exit:
     
 ## Recursive Function - Factorial 5!
 
+[my_factorial.s](./my_factorial.s)
+
 ```assembly
 .section  .text
 .globl _start
