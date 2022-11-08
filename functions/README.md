@@ -445,3 +445,5 @@ Standard exit.
  int $0x80
 ```
 Also mostly standard system call to exit, just not that we are using %ecx to hold the result.
+
+`.type factorial, @function`  - this tells the linker that factorial is a function. 
