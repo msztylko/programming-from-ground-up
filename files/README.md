@@ -35,8 +35,8 @@ its file descriptor.
 
 ## Buffers and .bss
 
-A buffer is a continuous block of bytes used for bulk data transfer. The OS needs to have a place to store the data it reads and this is what buffer is for.
-    - buffers are fixed size
+A buffer is a continuous block of bytes used for bulk data transfer. The OS needs to have a place to store the data it reads and this is what buffer is for:  
+    - buffers are fixed size  
     - you need to reserve static or dynamic storage for buffer
     
     
