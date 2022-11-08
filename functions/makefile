@@ -10,5 +10,9 @@ factorial: factorial.o
 	ld -m elf_i386 factorial.o -o factorial
 factorial.o: factorial.s
 	as --32 factorial.s -o factorial.o
+my_factorial: my_factorial.o
+	ld -m elf_i386 my_factorial.o -o my_factorial
+my_factorial.o: my_factorial.s
+	as --32 my_factorial.s -o my_factorial.o
 clean:
-	rm *.o power my_function
+	rm *.o power my_function factorial my_factorial
