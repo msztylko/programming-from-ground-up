@@ -32,3 +32,29 @@ its file descriptor.
 4. Close the file
     - the system call number (6)
     - the file descriptor (in %ebx)
+
+## Buffers and .bss
+
+A buffer is a continuous block of bytes used for bulk data transfer. The OS needs to have a place to store the data it reads and this is what buffer is for.
+    - buffers are fixed size
+    - you need to reserve static or dynamic storage for buffer
+    
+    
+`.bss` use this section to reserve storage (it's like data section, but it doesn't take up space in the executable)
+
+```assembly
+.section .bss
+
+.lcomm my_buffer, 500
+```
+
+`.lcomm` directive will create a symbol, my_buffer, that refers to a 500-byte storage location.
+If we opened a file for reading and have placed the file descriptor in %ebx we can do
+
+```assembly
+movl $my_buffer, %ecx
+movl 500, %edx
+movl 3, %eax
+int $0x80
+```
+We use `$my_buffer` to put the address of the buffer into %ecx. `my_buffer` instead would use direct addressing mode and would put value pointed by `my_buffer` instead of the address.
