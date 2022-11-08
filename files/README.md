@@ -58,3 +58,16 @@ movl 3, %eax
 int $0x80
 ```
 We use `$my_buffer` to put the address of the buffer into %ecx. `my_buffer` instead would use direct addressing mode and would put value pointed by `my_buffer` instead of the address.
+
+## Standard and Special Files
+
+Linux programs usually have at least three open file descriptors whey they begin.
+
+1. STDIN - *standard input*. Read-only file, and usually represents your keyboard. This is always file descriptor 0.
+2. STDOUT - *standard output*. Write-only file, and usually represnts your screen display. This is always file descriptor 1.
+3. STDERR - *standard error*. Write-only file, and usually represents your screen display and is mostly used for error messages. This is always file descriptor 2.
+
+Any of these "files" can be redirected form or to a real file. UNIX-based operating systems treat all input/output systems as files.
+    - network connections
+    - serial port
+    - audio devices
