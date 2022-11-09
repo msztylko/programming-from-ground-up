@@ -71,3 +71,12 @@ Any of these "files" can be redirected form or to a real file. UNIX-based operat
     - network connections  
     - serial port  
     - audio devices  
+
+## Using Files in a Program
+
+`.equ` directive - assign names to numbers.
+
+```assembly
+.equ LINUX_SYSCALL, 0x80
+int $LINUX_SYSCALL
+```
