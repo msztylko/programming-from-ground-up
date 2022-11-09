@@ -22,6 +22,7 @@ _start:
  movl $1, %eax
  int $0x80
 
+.type maximum, @function 
 maximum:
  # 3 save ebp
  pushl %ebp
