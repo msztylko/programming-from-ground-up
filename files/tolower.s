@@ -1,9 +1,9 @@
 .section .data
     # syscalls
-    .equ OPEN_SYSCAL, 5
-    .equ CLOSE_SYSCAL, 6
-    .equ READ_SYSCAL, 3
-    .equ WRITE_SYSCAL, 4
+    .equ OPEN_SYSCALL, 5
+    .equ CLOSE_SYSCALL, 6
+    .equ READ_SYSCALL, 3
+    .equ WRITE_SYSCALL, 4
     .equ EXIT_SYSCALL, 1
 
     .equ STDIN, 0
@@ -14,7 +14,7 @@
     .equ EOF, 0
 
     .equ O_RDONLY, 0
-    .equ O_CREAT_WRONLY_TRUN, 03101
+    .equ O_CREAT_WRONLY_TRUNC, 03101
 
 .section .bss
     .equ BUFFER_SIZE, 500
@@ -39,10 +39,10 @@ _start:
 
 # open files
 open_fd_in:
-    movl $OPEN_SYSCALL,     %eax
-    movl $ST_ARGV_1(%ebp),  %ebx
-    movl $O_RDONLY,         %ecx
-    movl $0666,             %edx
+    movl $OPEN_SYSCALL, %eax
+    movl ST_ARGV_1(%ebp), %ebx
+    movl $O_RDONLY, %ecx
+    movl $0666, %edx
     int $LINUX_SYSCALL
 
 store_fd_in:
@@ -50,7 +50,7 @@ store_fd_in:
 
 open_fd_out:
     movl $OPEN_SYSCALL, %eax
-    movl $ST_ARGV_2(%ebp), %ebx
+    movl ST_ARGV_2(%ebp), %ebx
     movl $O_CREAT_WRONLY_TRUNC, %ecx
     movl $0666, %edx
     int $LINUX_SYSCALL
@@ -62,7 +62,7 @@ store_fd_out:
 read_loop_start:
     # read into buffer
     movl $READ_SYSCALL, %eax
-    movl $ST_FD_IN(%ebp), %ebx
+    movl ST_FD_IN(%ebp), %ebx
     movl $BUFFER_DATA, %ecx
     movl $BUFFER_SIZE, %edx
     int  $LINUX_SYSCALL
@@ -80,7 +80,7 @@ read_loop_continue:
     # write buffer
     movl %eax, %edx
     movl $WRITE_SYSCALL, %eax
-    movl $ST_FD_OUT, %ebx
+    movl ST_FD_OUT(%ebp), %ebx
     movl $BUFFER_DATA, %ecx
     int $LINUX_SYSCALL
 
@@ -89,10 +89,10 @@ read_loop_continue:
 exit_loop:
     
     movl $CLOSE_SYSCALL, %eax
-    movl $ST_FD_OUT(%ebp), %ebx
+    movl ST_FD_OUT(%ebp), %ebx
     int $LINUX_SYSCALL
     movl $CLOSE_SYSCALL, %eax
-    movl $ST_FD_IN(%ebp), %ebx
+    movl ST_FD_IN(%ebp), %ebx
     int $LINUX_SYSCALL
 
     movl $EXIT_SYSCALL, %eax
@@ -116,8 +116,8 @@ convert_to_lower:
     pushl %ebp
     movl %esp, %ebp
 
-    movl $ST_BUFFER(%ebp), %eax
-    movl $ST_BUFFER_LEN(%ebp), %ebx
+    movl ST_BUFFER(%ebp), %eax
+    movl ST_BUFFER_LEN(%ebp), %ebx
     movl $0, %edi
 
     cmpl $0, %ebx
