@@ -4,3 +4,5 @@ write_records.o: write_records.s
 	as --32 write_records.s -o write_records.o
 write_record.o: write_record.s
 	as --32 write_record.s -o write_record.o
+clean:
+	rm *.o write_records
