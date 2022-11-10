@@ -80,3 +80,90 @@ Any of these "files" can be redirected form or to a real file. UNIX-based operat
 .equ LINUX_SYSCALL, 0x80
 int $LINUX_SYSCALL
 ```
+
+## `tolower` program breakdown
+
+[tolower.s](./tolower.s)
+
+### Constants
+
+```assembly
+.section .data
+    # syscalls
+    .equ OPEN_SYSCALL, 5
+    .equ CLOSE_SYSCALL, 6
+    .equ READ_SYSCALL, 3
+    .equ WRITE_SYSCALL, 4
+    .equ EXIT_SYSCALL, 1
+
+    .equ STDIN, 0
+    .equ STDOUT, 1
+    .equ STDERR, 2
+
+    .equ LINUX_SYSCALL, 0x80
+    .equ EOF, 0
+
+    .equ O_RDONLY, 0
+    .equ O_CREAT_WRONLY_TRUNC, 03101
+```
+This is a bigger program, so no way to remember all numeric values used in different places. Better to put majority of them in the one place at the beginning of the program.
+
+### Buffer allocation
+
+```assembly
+.section .bss
+    .equ BUFFER_SIZE, 500 
+    .lcomm BUFFER_DATA, BUFFER_SIZE
+
+```
+Again, it's useful to define constants to values we're going to refer to later.
+
+### Conver to lower function
+
+```assembly
+# VARIABLES:
+# %eax - beginning of buffer
+# %ebx - length of buffer
+# %edi - current buffer offset
+# %cl - current byte being examined
+# (first part of %ecx)
+# conver to lower
+    .equ UPPERCASE_A, 'A'
+    .equ UPPERCASE_Z, 'Z'
+    .equ LOWER_CONVERSION, 'a' - 'A'
+    .equ ST_BUFFER_LEN, 8
+    .equ ST_BUFFER, 12
+
+convert_to_lower:
+    pushl %ebp
+    movl %esp, %ebp
+
+    movl ST_BUFFER(%ebp), %eax
+    movl ST_BUFFER_LEN(%ebp), %ebx
+    movl $0, %edi
+
+    cmpl $0, %ebx
+    je end_convert_loop
+
+convert_loop:
+    movb (%eax, %edi, 1), %cl
+    cmpb $UPPERCASE_A, %cl
+    jl next_byte
+    cmpb $UPPERCASE_Z, %cl
+    jg next_byte
+
+    addb $LOWER_CONVERSION, %cl
+    movb %cl, (%eax, %edi, 1)
+
+next_byte:
+    incl %edi
+    cmpl %edi, %ebx
+    jne convert_loop
+
+end_convert_loop:
+    movl %ebp, %esp
+    popl %ebp
+    ret
+```
+
+
