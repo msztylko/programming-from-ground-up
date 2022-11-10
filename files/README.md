@@ -118,7 +118,7 @@ This is a bigger program, so no way to remember all numeric values used in diffe
 ```
 Again, it's useful to define constants to values we're going to refer to later.
 
-### Conver to lower function
+### `convert_to_lower` function
 
 ```assembly
 # VARIABLES:
@@ -166,4 +166,116 @@ end_convert_loop:
     ret
 ```
 
+Constants are useful for defining stack positions we're going to refer to frequently `ST_BUFFER_LEN` and `ST_BUFFER`.
 
+```assembly
+    cmpl $0, %ebx
+    je end_convert_loop
+```
+sanity check to make sure that we don't have a buffer with size 0.
+
+`%cl` - first part of %ecx
+
+Conversion goes byte-by-byte.
+
+### Working with files
+
+General pattern for working with files is:
+1. Allocate space for file descriptors
+2. For each file you work with:
+    - open file with syscall
+    - store file descriptor
+
+```assembly
+    movl %esp, %ebp
+    subl $ST_SIZE_RESERVE, %esp
+```
+Allocates 8 bytes for file descriptors.
+
+```assembly
+open_fd_in:
+    movl $OPEN_SYSCALL, %eax
+    movl ST_ARGV_1(%ebp), %ebx
+    movl $O_RDONLY, %ecx
+    movl $0666, %edx
+    int $LINUX_SYSCALL
+```
+Open system call for input file.
+
+```assembly
+store_fd_in:
+    movl %eax, ST_FD_IN(%ebp)
+```
+Store file descriptor on the stack. After making the system call, the file descriptor of the newly-opened file is stored in %eax.
+
+```assembly
+open_fd_out:
+    movl $OPEN_SYSCALL, %eax
+    movl ST_ARGV_2(%ebp), %ebx
+    movl $O_CREAT_WRONLY_TRUNC, %ecx
+    movl $0666, %edx
+    int $LINUX_SYSCALL
+
+store_fd_out:
+    movl %eax, ST_FD_OUT(%ebp)
+```
+The same steps for output file.
+
+Getting file names from the command line is easy, becaue when a Linux program begins, all pointers to command-line arguments are stored on the stack. That's why we can say:
+
+```assembly
+      .equ ST_ARGC, 0 # Number of arguments
+      .equ ST_ARGV_0, 4 # Name of program
+      .equ ST_ARGV_1, 8 # Input file name
+      .equ ST_ARGV_2, 12 # Output file name
+```
+
+for this to work we also need to store the current stack pointer in %ebp and we do it at the beginning of the program:
+
+```assembly
+_start:
+    movl %esp, %ebp
+```
+
+`.equ O_CREAT_WRONLY_TRUNC, 03101` mode we use to open output file is write-only, create-if-doesn’t-exist, truncate-if-does-exist mode.
+
+### Read/write loop
+
+1. Read into buffer
+    - check for EOF  
+
+```assembly
+    # read into buffer
+    movl $READ_SYSCALL, %eax
+    movl ST_FD_IN(%ebp), %ebx
+    movl $BUFFER_DATA, %ecx
+    movl $BUFFER_SIZE, %edx
+    int  $LINUX_SYSCALL
+    # check for EOF
+    cmpl $EOF, %eax
+    je exit_loop
+```
+
+2. Process buffer 
+    - call `convert` function (push params in reverse order)
+    - cleanup after call (reset %esp)
+
+```assembly
+    pushl $BUFFER_DATA
+    pushl %eax          # this seems to be important as it comes from actual system call
+    call convert_to_lower
+    popl %eax           # get the size back
+    addl $4, %esp       # reset %esp
+```
+
+3. Write buffer to output file
+
+```assembly
+    movl %eax, %edx
+    movl $WRITE_SYSCALL, %eax
+    movl ST_FD_OUT(%ebp), %ebx
+    movl $BUFFER_DATA, %ecx
+    int $LINUX_SYSCALL
+
+    jmp read_loop_start
+```
