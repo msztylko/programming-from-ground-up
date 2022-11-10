@@ -67,8 +67,8 @@ record3:
 file_name:
  .ascii "test.dat\0"
 
-.setction .text
-.equ ST_FILE_DESCRIPTOR  -4
+.section .text
+.equ ST_FILE_DESCRIPTOR , -4
 .globl _start
 
 _start:
