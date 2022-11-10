@@ -61,7 +61,6 @@
 
 .globl _start
 _start:
-
     ### INITIALIZE PROGRAM ###
     
     movl %esp, %ebp                 # save the stack pointer
@@ -69,7 +68,6 @@ _start:
 
 open_files:
 open_fd_in:
-
     ###OPEN INPUT FILE###
     movl $SYS_OPEN, %eax            # open syscall
     movl ST_ARGV_1(%ebp), %ebx      # input filename into %ebx
@@ -78,14 +76,10 @@ open_fd_in:
     int $LINUX_SYSCALL              # call Linux
 
 store_fd_in:
-
-
     movl %eax, ST_FD_IN(%ebp)       # save the given file descriptor
 
 open_fd_out:
-
     ### OPEN OUTPUT FILE ###
-    
     movl $SYS_OPEN, %eax            # open the file
     movl ST_ARGV_2(%ebp), %ebx      # output filename into %ebx
     movl $O_CREAT_WRONLY_TRUNC, %ecx# flags for writing to the file
@@ -93,13 +87,10 @@ open_fd_out:
     int $LINUX_SYSCALL              # call Linux
 
 store_fd_out:
-
     movl %eax, ST_FD_OUT(%ebp)      # store the file descriptor here
 
 ### BEGIN MAIN LOOP ###
-
 read_loop_begin:
-
     ### READ IN A BLOCK FROM THE INPUT FILE ###
     movl $SYS_READ, %eax
     movl ST_FD_IN(%ebp), %ebx       # get the input file descriptor
@@ -111,7 +102,6 @@ read_loop_begin:
     jle end_loop                    # if found or on error, go to the end
 
 continue_read_loop:
-
     ### CONVERT THE BLOCK TO UPPER CASE ###
     pushl $BUFFER_DATA              # location of buffer
     pushl %eax                      # size of the buffer
@@ -128,23 +118,22 @@ continue_read_loop:
     jmp read_loop_begin
 
 end_loop:
-
-### CLOSE THE FILES ###
-# NOTE - we don't need to do error checking
-# on these, because error conditions
-# don't signify anything special here
-
-movl $SYS_CLOSE, %eax
-movl ST_FD_OUT(%ebp), %ebx
-int $LINUX_SYSCALL
-movl $SYS_CLOSE, %eax
-movl ST_FD_IN(%ebp), %ebx
-int $LINUX_SYSCALL
+    ### CLOSE THE FILES ###
+    # NOTE - we don't need to do error checking
+    # on these, because error conditions
+    # don't signify anything special here
     
-### EXIT ###
-movl $SYS_EXIT, %eax
-movl $0, %ebx
-int $LINUX_SYSCALL
+    movl $SYS_CLOSE, %eax
+    movl ST_FD_OUT(%ebp), %ebx
+    int $LINUX_SYSCALL
+    movl $SYS_CLOSE, %eax
+    movl ST_FD_IN(%ebp), %ebx
+    int $LINUX_SYSCALL
+        
+    ### EXIT ###
+    movl $SYS_EXIT, %eax
+    movl $0, %ebx
+    int $LINUX_SYSCALL
 
 # PURPOSE: This function actually does the
 # conversion to upper case for a block
@@ -173,7 +162,6 @@ int $LINUX_SYSCALL
     .equ ST_BUFFER, 12              # actual buffer
 
 convert_to_upper:
-
     pushl %ebp
     movl %esp, %ebp
     ### SET UP VARIABLES ###
@@ -185,7 +173,6 @@ convert_to_upper:
     je end_convert_loop
 
 convert_loop:
-
     movb (%eax,%edi,1), %cl         # get the current byte
     cmpb $LOWERCASE_A, %cl          # go to the next byte unless it is between 'a' and 'z'
     jl next_byte
@@ -195,7 +182,6 @@ convert_loop:
     movb %cl, (%eax,%edi,1)         # and store it back
 
 next_byte:
-
     incl %edi                       # next byte
     cmpl %edi, %ebx                 # continue unless we've reached the end
     jne convert_loop
