@@ -16,8 +16,8 @@ helloworld_end:
 _start:
  movl $STDOUT, %ebx
  movl $helloworld, %ecx
- movl %helloworld_len, %edx
- movl %$SYS_WRITE, %eax
+ movl $helloworld_len, %edx
+ movl $SYS_WRITE, %eax
  int $LINUX_SYSCALL
 
  movl $0, %ebx
