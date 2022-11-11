@@ -55,3 +55,6 @@ ldd helloworld-lib32
 ```
 
 `ldd` shows shared object dependencies
+
+## Finding Information about Libraries
+
