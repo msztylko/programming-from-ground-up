@@ -14,3 +14,17 @@ The book uses 32-bit assembly and I follow it this way on my 64-bit Linux using 
 ```bash
 apt-get install libc6:i386 libc6-dev-i386
 ```
+
+## Using a Shared Library
+
+```makefile
+helloworld-lib32: helloworld-lib32.o
+    ld -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 helloworld-lib32.o -lc -o helloworld-lib32
+helloworld-lib32.o: helloworld-lib32.s
+    as --32 helloworld-lib32.s -o helloworld-lib32.o
+```
+
+`-lc` option says to link to the c library, named `libc.so` Given library name (c) linker:
+* prepends the string lib to the beginning of the library name  
+* appends .so to the end of it   
+to form the library's name
