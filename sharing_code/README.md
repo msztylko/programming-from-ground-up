@@ -92,3 +92,11 @@ From the c library:
  * `int fprintf (FILE *stream, const char *template, ...)` - like printf, but it uses an open file rather than defaulting to using standard output
 
 ## Building a Shared Library
+
+```bash
+ld -shared write-record.o read-record.o -o librecord.so
+
+as write-records.s -o write-records
+ld -L . -dynamic-linker /lib/ld-linux.so.2 \
+	-o write-records -lrecord write-records.o
+```
