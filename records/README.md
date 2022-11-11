@@ -24,3 +24,42 @@ Then we can use this file with `.include` directive:
 .include "record-def.s"
 .include "linux.s"
 ```
+
+## Records
+
+```assembly
+.include "linux.s"
+.include "record-def.s"
+
+.section .data
+
+record1:
+.ascii "Fredrick\0"
+.rept 31 # Padding to 40 bytes
+.byte 0
+.endr
+
+.ascii "Bartlett\0"
+.rept 31 # Padding to 40 bytes
+.byte 0
+.endr
+
+.ascii "4242 S Prairie\nTulsa, OK 55555\0"
+.rept 209 # Padding to 240 bytes
+.byte 0
+.endr
+
+.long 45
+```
+
+`.rept` is used to pad each item. It repeats the section between .rept and .endr the number of times specified.
+
+```assembly
+.ascii "Fredrick\0"
+.rept 31 # Padding to 40 bytes
+.byte 0
+.endr
+```
+First name + padding to fill 40 bytes as we assigned them for the first name.
+
+`.long 45` corresponds to age field.
