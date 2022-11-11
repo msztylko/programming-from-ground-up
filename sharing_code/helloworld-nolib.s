@@ -14,13 +14,13 @@ helloworld_end:
 .section .text
 .globl _start
 _start:
- movl $STDOUT, %ebx
- movl $helloworld, %ecx
- movl $helloworld_len, %edx
- movl $SYS_WRITE, %eax
+ movq $STDOUT, %rbx
+ movq $helloworld, %rcx
+ movq $helloworld_len, %rdx
+ movq $SYS_WRITE, %rax
  int $LINUX_SYSCALL
 
- movl $0, %ebx
- movl $SYS_EXIT, %eax
+ movq $0, %rbx
+ movq $SYS_EXIT, %rax
  int $LINUX_SYSCALL
 
