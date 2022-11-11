@@ -39,3 +39,19 @@ When dynamicall-linked program begins execution:
 1. The dynamic linker (/lib/ld-linux.so.2) is loaded first.
 2. It search for and loads dynamically linked libraries (libc.so)
 3. Finally, it replaces all the needed symbols with the actual location in the dynamic library 
+
+```bash
+ldd helloworld-nolib
+
+not a dynamic executable
+```
+
+```bash
+ldd helloworld-lib32
+
+    linux-gate.so.1 (0xf7f6e000)
+	libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xf7d71000)
+	/lib/ld-linux.so.2 (0xf7f6f000)
+```
+
+`ldd` shows shared object dependencies
