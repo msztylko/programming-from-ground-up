@@ -78,3 +78,17 @@ struct teststruct {
 ```
 
  * `typedef` - allows you to rename a type
+
+## Useful Functions
+ 
+From the c library:
+ * `size_t strlen (const char *s)` - calculates the size of null-terminated strings
+ * `int strcmp (const char *s1, const char *s2)` - compares two strings alphabetically
+ * `char * strdup (const char *s)` - takes the pointer to a string, and creates a new copy in a new location, and returns the new location
+ * `FILE * fopen (const char *filename, const char *opentype)` - opens a managed, buffered file (allows easier reading and writing than using file descriptors directly)
+ * `int fclose (FILE *stream)` - closes a file opened with fopen
+ * `char * fgets (char *s, int count, FILE *stream)` - fetches a line of characters into string s
+ * `int fputs (const char *s, FILE *stream)` - writes a string to the given open file
+ * `int fprintf (FILE *stream, const char *template, ...)` - like printf, but it uses an open file rather than defaulting to using standard output
+
+## Building a Shared Library
