@@ -27,4 +27,15 @@ helloworld-lib32.o: helloworld-lib32.s
 `-lc` option says to link to the c library, named `libc.so` Given library name (c) linker:
 * prepends the string lib to the beginning of the library name  
 * appends .so to the end of it   
-to form the library's name
+to form the library's name.
+
+## How Shared Libraries Work
+
+*statically-linked executable* - program with all the code contained within the source file.
+*dynamically-linked executable* - program that uses external libraries.
+
+Any symbols that are not defined within our program are looked up in dynamically linked libraries.
+When dynamicall-linked program begins execution:
+1. The dynamic linker (/lib/ld-linux.so.2) is loaded first.
+2. It search for and loads dynamically linked libraries (libc.so)
+3. Finally, it replaces all the needed symbols with the actual location in the dynamic library 
