@@ -66,6 +66,6 @@ First name + padding to fill 40 bytes as we assigned them for the first name.
 
 `.include "linux.s"` is a text substition, so contents of "linux.s" will be pasted right there in the code.
 
-We don't need to do similar substitions with functions:
-`ld -m elf_i386 read_record.o count_chars.o write_newline.o read_records.o -o read_records`
+We don't need to do similar substitions with functions:  
+`ld -m elf_i386 read_record.o count_chars.o write_newline.o read_records.o -o read_records`  
 as long as they are defined with `.globl` linker will be able to use them.
