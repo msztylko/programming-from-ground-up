@@ -8,3 +8,9 @@ Shared libraries are also know as *shared objects, dynamic-link libraries, DLLs,
 `%eax` -> `%rax`
 
 [helloworld-nolib.s](./helloworld-nolib.s)
+
+### Dynamic linking technicalities
+The book uses 32-bit assembly and I follow it this way on my 64-bit Linux using emulation to 32-bit version. However, libc.so is needed for dynamic linking and I only had 64-bit version of this library. 32-bit version can installed with:
+```bash
+apt-get install libc6:i386 libc6-dev-i386
+```
