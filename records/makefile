@@ -14,5 +14,9 @@ write_newline.o: write_newline.s
 	as --32 write_newline.s -o write_newline.o
 read_records.o: read_records.s
 	as --32 read_records.s -o read_records.o
+add_year: add_year.o read_record.o write_record.o
+	ld -m elf_i386 add_year.o read_record.o write_record.o -o add_year
+add_year.o: add_year.s
+	as --32 add_year.s -o add_year.o
 clean:
-	rm *.o write_records read_records
+	rm *.o write_records read_records add_year
