@@ -53,3 +53,5 @@ is the same as
 movl (%esp), %eax
 addl $4, %esp
 ```
+
+Your program’s data region starts at the bottom of memory and goes up. The stack starts at the top of memory, and moves downward with each push. This middle part between the stack and your program’s data sections is inaccessible memory. The last accessible memory address to your program is called the **system break** (also called the current break or just the break).
