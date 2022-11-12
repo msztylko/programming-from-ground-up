@@ -63,7 +63,7 @@ Useful data types:
  * `long` - integer number, 4 bytes on x86 processor
  * `long long` -integer number, 8 bytes on x86 processor
  * `short` - integer number, 2 bytes on x86 processor
- * `char` - single-byte integer number. Used for stroing character data
+ * `char` - single-byte integer number. Used for storing character data
  * `float` - floating-point number, 4 bytes on x86 processor
  * `double` - floating-point number, 8 bytes on x86 processor
  * `unsigned` - modifier used for the above types which keeps them from being used as signed quantities.
