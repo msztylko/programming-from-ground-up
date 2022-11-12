@@ -64,3 +64,21 @@ Your program’s data region starts at the bottom of memory and goes up. The sta
 **Virtual memory** is the way your program thinks about memory. Before loading your program, Linux finds an empty physical memory space large enough to fit your program, and then tells the processor to pretend that this memory is actually at the address 0x0804800 to load your program into.
 
 Each program gets its own sandbox to play in. Every program running on your computer thinks that it was loaded at memory address 0x0804800, and that it’s stack starts at 0xbffffff. The address that a program believes it uses is called the virtual address, while the actual address on the chips that it refers to is called the physical address. The process of assigning virtual addresses to physical addresses is called **mapping**.
+
+
+Virtual memory can be mapped to more than just physical memory; it can be mapped to disk as well. On Linux, swap partitions are used for that.
+
+x86 processors cannot run instructions directly from disk, nor can they access data directly from disk. This requires the help of the operating system.
+
+### Memory access on Linux:
+1. The program tries to load memory from a virtual address.
+2. The processor, using tables supplied by Linux, transforms the virtual memory address into a physical memory address on the fly.
+3. If the processor does not have a physical address listed for the memory address, it sends a request to Linux to load it.
+4. Linux looks at the address. If it is mapped to a disk location, it continues on to the next step. Otherwise, it terminates the program with a segmentation fault error.
+5. If there is not enough room to load the memory from disk, Linux will move another part of the program or another program onto disk to make room.
+6. Linux then moves the data into a free physical memory address.
+7. Linux updates the processor’s virtual-to-physical memory mapping tables to reflect the changes.
+8. Linux restores control to the program, causing it to re-issue the instruction which caused this process to happen.
+9. The processor can now handle the instruction using the newly-loaded memory and translation tables.
+
+To make the process more efficient, memory is separated out into groups called **pages**. When running Linux on x86 processors, a page is 4096 bytes of memory. All of the memory mappings are done a page at a time.
