@@ -11,4 +11,15 @@ takes up 7 storage locations:
  * 1 tells which registers to use
  * 4 hold the storage location of data_items
 
+**byte** - the size of a storage location. Usually 8 bits.  
+**word** - the size of a normal register. On 64-bit machines it should correspond to 64 bits and to 32 bits on 32-bit machines.  
+**address** - a number that refers to a byte in memory. We normally don't use numeric values, but rather use labels.
 
+```assembly
+.section .data
+my_data:
+.long 2, 3, 4
+```
+**pointer** - a register or memory word whose value is an address.
+
+## The Memory Layout of a Linux Program
