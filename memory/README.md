@@ -55,3 +55,10 @@ addl $4, %esp
 ```
 
 Your program’s data region starts at the bottom of memory and goes up. The stack starts at the top of memory, and moves downward with each push. This middle part between the stack and your program’s data sections is inaccessible memory. The last accessible memory address to your program is called the **system break** (also called the current break or just the break).
+
+![image](https://user-images.githubusercontent.com/39266310/201473623-64e0ecc1-e90b-4df0-add7-694838eba2b3.png)
+
+## Every Memory Address is a Lie
+
+**Physical memory** refers to the actual RAM chips inside your computer and what they contain. If we talk about a physical memory address, we are talking about where exactly on these chips a piece of memory is located.   
+**Virtual memory** is the way your program thinks about memory. Before loading your program, Linux finds an empty physical memory space large enough to fit your program, and then tells the processor to pretend that this memory is actually at the address 0x0804800 to load your program into.
