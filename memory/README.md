@@ -62,3 +62,5 @@ Your program’s data region starts at the bottom of memory and goes up. The sta
 
 **Physical memory** refers to the actual RAM chips inside your computer and what they contain. If we talk about a physical memory address, we are talking about where exactly on these chips a piece of memory is located.   
 **Virtual memory** is the way your program thinks about memory. Before loading your program, Linux finds an empty physical memory space large enough to fit your program, and then tells the processor to pretend that this memory is actually at the address 0x0804800 to load your program into.
+
+Each program gets its own sandbox to play in. Every program running on your computer thinks that it was loaded at memory address 0x0804800, and that it’s stack starts at 0xbffffff. The address that a program believes it uses is called the virtual address, while the actual address on the chips that it refers to is called the physical address. The process of assigning virtual addresses to physical addresses is called **mapping**.
