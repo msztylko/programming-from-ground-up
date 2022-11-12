@@ -23,3 +23,33 @@ my_data:
 **pointer** - a register or memory word whose value is an address.
 
 ## The Memory Layout of a Linux Program
+
+When you program is loaded into memory, each .section is loaded into its own region of memory.  
+The actual instructions (the .text section) are loaded at the address 0x08048000.  
+The .data section is loaded immediately after that, followed by the .bss section.  
+The last byte that can be addressed on Linux is location 0xbfffffff. Linux starts the stack here and grows it downward toward the other sections.
+
+Stack from the bottom:
+ - word of memory that is zero
+ - null-terminated name of the program using ASCII characters
+ - program's environment variables
+ - command-line arguments 
+
+Stack pushes:
+```assembly
+pushl %eax
+```
+is equivalent to
+```assembly
+movl %eax, (%esp)
+subl $4, %esp
+```
+and for pops
+```assembly
+popl $eax
+```
+is the same as
+```assembly
+movl (%esp), %eax
+addl $4, %esp
+```
