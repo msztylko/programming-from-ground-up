@@ -115,4 +115,4 @@ If you need more memory, you can just tell Linux where you want the new break po
  
 The new break point might actually be larger than what you asked for, because Linux rounds up to the nearest page.
 
-A **memory manager** is a set of routines that takes care of the dirty work of getting your program memory for you.
+A **memory manager** is a set of routines that takes care of the dirty work of getting your program memory for you. Most memory managers have two basic functions - allocate and deallocate, `malloc` and `free` in C, respectively. When you need memory you call `allocate` and when you are done you call `deallocate` - this pattern of memory management is called **dynamic memory allocation**. The pool of memory used by memory managers is commonly referred to as the **heap**. 
