@@ -31,7 +31,7 @@ to form the library's name.
 
 ## How Shared Libraries Work
 
-*statically-linked executable* - program with all the code contained within the source file.
+*statically-linked executable* - program with all the code contained within the source file.  
 *dynamically-linked executable* - program that uses external libraries.
 
 Any symbols that are not defined within our program are looked up in dynamically linked libraries.
