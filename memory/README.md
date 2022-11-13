@@ -82,7 +82,26 @@ x86 processors cannot run instructions directly from disk, nor can they access d
 9. The processor can now handle the instruction using the newly-loaded memory and translation tables.
 
 To make the process more efficient, memory is separated out into groups called **pages**. When running Linux on x86 processors, a page is 4096 bytes of memory. All of the memory mappings are done a page at a time.
+## Getting More Memory 
 
-## Getting More Memory
+If you try to access a piece of virtual memory that hasn’t been mapped yet, it triggers an error known as a  **segmentation fault**, which will terminate your program.
 
-If you try to access a piece of virtual memory that hasn’t been mapped yet, it triggers an error known as a **segmentation fault**, which will terminate your program.
+If you need more memory, you can just tell Linux where you want the new break point to be, and Linux will map all the memory you need between the current and new break point, and then move the break point to the spot you specify. The way we tell Linux to move the break point is through the `brk` system call.
+
+`brk`:
+ * system call number 45, which will be in %eax
+ * requested breakpoint should be loaded in %ebx
+ * call it with `int $0x80`
+ * new break point will be returned in %eax
+ 
+The new break point might actually be larger than what you asked for, because Linux rounds up to the nearest page.
+
+A **memory manager** is a set of routines that takes care of the dirty work of getting your program memory for you. Most memory managers have two basic functions - allocate and deallocate, `malloc` and `free` in C, respectively. When you need memory you call `allocate` and when you are done you call `deallocate` - this pattern of memory management is called **dynamic memory allocation**. The pool of memory used by memory managers is commonly referred to as the **heap**. 
+
+Memory manager:
+ * marks each block of memory in the heap as being used or unused
+ * when you request memory, the memory manger
+   * checks to see if there are any unused blocks of the appropiate size
+   * if not, it calls the `brk` system call to request more memory
+* when you free memory it marks the block as unused
+
