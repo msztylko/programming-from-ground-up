@@ -73,3 +73,22 @@ Permissions in Linux are done using octal. This is because Linux permissions are
 
 In octal, each digit represented three bits. In hexadecimal, each digit represents four bits. Every two digits is a full byte, and eight digits is a 32-bit word.
 
+## Order of Bytes in a Word
+
+One thing that confuses many people when dealing with bits and bytes on a low level is that, when bytes are written from registers to memory, their bytes are written out least-significant-portion-first. 
+What most people expect is that if they have a word in a register, say 0x5d 23 ef ee (the spacing is so you can see where the bytes are), the bytes will be written to memory in that order. 
+However, on x86 processors, the bytes are actually written in reverse order. 
+In memory the bytes would be 0xee ef 23 5d on x86 processors. 
+The bytes are written in reverse order from what they would appear conceptually, but the bits within the
+bytes are ordered normally.
+
+Not all processors behave this way. The x86 processor is a little-endian processor, which means that it stores the "little end", or least-significant byte of its words first.
+
+![image](https://user-images.githubusercontent.com/39266310/201521613-7163b4a9-31e4-48dc-9030-cfba5cf0a147.png)
+
+Other processors are big-endian processors, which means that they store the "big end", or most significant byte, of their words first, the way we would naturally read a number.
+
+![image](https://user-images.githubusercontent.com/39266310/201521652-6f6ea27c-05d6-43b3-bde0-72f6a52dcdf8.png)
+
+
+## Converting Numbers for Display
