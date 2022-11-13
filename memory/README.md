@@ -82,3 +82,7 @@ x86 processors cannot run instructions directly from disk, nor can they access d
 9. The processor can now handle the instruction using the newly-loaded memory and translation tables.
 
 To make the process more efficient, memory is separated out into groups called **pages**. When running Linux on x86 processors, a page is 4096 bytes of memory. All of the memory mappings are done a page at a time.
+
+## Getting More Memory
+
+If you try to access a piece of virtual memory that hasn’t been mapped yet, it triggers an error known as a **segmentation fault**, which will terminate your program.
