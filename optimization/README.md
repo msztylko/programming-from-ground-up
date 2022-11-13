@@ -17,3 +17,11 @@
 7. **Addressing Modes** - Different addressing modes work at different speeds. The fastest are the immediate and register addressing modes. Direct is the next fastest, indirect is next, and base pointer and indexed indirect are the slowest. Try to use the faster addressing modes, when possible. 
 
 8. **Data Alignment** - Some processors can access data on word-aligned memory boundaries (i.e. - addresses divisible by the word size) faster than non-aligned data. 
+
+## Global Optimization
+
+One of the goals of global optimization is ot put your code in a form where it is easy to do local optimizations.
+
+1. **Parallelization** - Parallelization means that your algorithm can effectively be split among
+multiple processes.
+2. **Statelessness** - stateless functions and programs are those that rely entirely on the data explicitly passed to them for functioning. Two great benefits resulting from statelessness is that most stateless functions are parallelizable and often benefit from memoization.
