@@ -55,7 +55,7 @@ To get the negative representation of a number in two’s complement form, you m
 1. Perform a NOT operation on the number
 2. Add one to the resulting number
 
-So, to get the negative of 00000000000000000000000000000001, you wouldfirst do a NOT operation, which gives 11111111111111111111111111111110, and then add one, giving 11111111111111111111111111111111.   
+So, to get the negative of 00000000000000000000000000000001, you would first do a NOT operation, which gives 11111111111111111111111111111110, and then add one, giving 11111111111111111111111111111111.   
 To get negative two, first take 00000000000000000000000000000010. The NOT of that number is 11111111111111111111111111111101. 
 Adding one gives 11111111111111111111111111111110.
 
