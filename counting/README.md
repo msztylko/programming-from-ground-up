@@ -2,7 +2,7 @@
 
 ### XOR trick
 
-Processors execute different instructions as different speed. XOR operation is faster than the loading operation and this fact is used for loading register with zero:
+Processors execute different instructions at different speed. XOR operation is faster than the loading operation and this fact is used for loading register with zero:
 
 ```assembly
 movl $0, %eax
