@@ -62,3 +62,6 @@ To get negative two, first take 00000000000000000000000000000010. The NOT of tha
 Adding one gives 11111111111111111111111111111110.
 
 Also, the first digit still carries the sign bit, making it simple to determine whether or not the number is positive or negative. Negative numbers will always have a 1 in the leftmost bit.
+
+When you increase the size of a signed quantity in two’s complement representation, you have to perform **sign extension**. 
+Sign extension means that you have to pad the left-hand side of the quantity with whatever digit is in the sign digit when you add bits.
