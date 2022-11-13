@@ -105,7 +105,7 @@ alloc_loop_begin:       # here we iterate through each memory region
     je next_location    # next one
 
     cmpl %edx, %ecx     # if the space is available, compare
-    jle alocate_here    # the size to the needed size. If it's
+    jle allocate_here    # the size to the needed size. If it's
                         # big enough, go to allocate_here
 
 next_location:
