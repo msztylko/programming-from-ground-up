@@ -6,7 +6,7 @@
 tmp_buffer:
     .ascii "\0\0\0\0\0\0\0\0\0\0\0"
 
-.seciton .text
+.section .text
 .globl _start
 
 _start:
