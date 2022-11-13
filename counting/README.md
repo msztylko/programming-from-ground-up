@@ -1,7 +1,5 @@
 # Counting Like a Computer
 
-Basic information about binary system
-
 ### XOR trick
 
 Processors execute different instructions as different speed. XOR operation is faster than the loading operation and this fact is used for loading register with zero:
@@ -65,3 +63,13 @@ Also, the first digit still carries the sign bit, making it simple to determine 
 
 When you increase the size of a signed quantity in two’s complement representation, you have to perform **sign extension**. 
 Sign extension means that you have to pad the left-hand side of the quantity with whatever digit is in the sign digit when you add bits.
+
+## Octal and Hexadecimal Numbers
+
+What makes octal nice is that every 3 binary digits make one octal digit (there is no such grouping of binary digits into decimal). 
+So 0 is 000, 1 is 001, 2 is 010, 3 is 011, 4 is 100, 5 is 101, 6 is 110, and 7 is 111.
+
+Permissions in Linux are done using octal. This is because Linux permissions are based on the ability to read, write and execute. The first bit is the read permission, the second bit is the write permission, and the third bit is the execute permission.
+
+In octal, each digit represented three bits. In hexadecimal, each digit represents four bits. Every two digits is a full byte, and eight digits is a 32-bit word.
+
